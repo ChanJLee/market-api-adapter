@@ -1,9 +1,12 @@
 package com.chan.api.huobi;
 
-import com.chan.api.MarketApi;
+import com.chan.api.huobi.model.HuoBiTicker;
+import retrofit.Call;
+import retrofit.http.GET;
+import retrofit.http.Query;
 
-/**
- * Created by chan on 2017/11/14.
- */
-public class HuoBiApi implements MarketApi {
+public interface HuoBiApi {
+
+    @GET("market/detail/merged")
+    Call<HuoBiTicker> fetchTicker(@Query("symbol") String symbol);
 }
