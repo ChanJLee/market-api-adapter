@@ -1,5 +1,6 @@
 package com.chan.api;
 
+import com.chan.model.Type;
 import com.squareup.okhttp.OkHttpClient;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
@@ -29,4 +30,6 @@ public abstract class AbstractMarketApi implements MarketApi {
     protected <T> T createApi(Class<T> apiClazz) {
         return mRetrofit.create(apiClazz);
     }
+
+    protected abstract String type2Symbol(Type type);
 }

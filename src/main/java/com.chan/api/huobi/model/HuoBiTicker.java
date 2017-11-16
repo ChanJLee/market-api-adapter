@@ -6,7 +6,8 @@ import java.util.List;
  * Created by chan on 2017/11/15.
  */
 public class HuoBiTicker {
-    private HuoBiTickerInternal tick;
+    public String status;
+    public HuoBiTickerInternal tick;
 
     public float getBuy() {
         return tick.getBuy();

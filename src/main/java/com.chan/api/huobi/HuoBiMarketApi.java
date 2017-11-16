@@ -1,10 +1,10 @@
 package com.chan.api.huobi;
 
 import com.chan.api.AbstractMarketApi;
-import com.chan.api.MarketApi;
 import com.chan.api.huobi.model.HuoBiTicker;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
+import org.apache.commons.lang.StringUtils;
 import retrofit.Response;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by chan on 2017/11/14.
  */
-public class HuoBiMarketApi extends AbstractMarketApi implements MarketApi {
+public class HuoBiMarketApi extends AbstractMarketApi {
     private HuoBiApi mHuoBiApi;
 
     public HuoBiMarketApi(String accessKey, String secretKey) {
@@ -21,16 +21,28 @@ public class HuoBiMarketApi extends AbstractMarketApi implements MarketApi {
     }
 
     @Override
-    public Ticker fetchTicker(Type pair) throws IOException {
+    public Ticker fetchTicker(Type type) throws IOException {
 
         Ticker ticker = new Ticker();
-        if (pair == Type.ETH_TO_USDT) {
-            Response<HuoBiTicker> response = mHuoBiApi.fetchTicker("ethusdt").execute();
-            HuoBiTicker huoBiTicker = response.body();
-            ticker.buy = huoBiTicker.getBuy();
-            ticker.sell = huoBiTicker.getSell();
+        String symbol = type2Symbol(type);
+
+        Response<HuoBiTicker> response = mHuoBiApi.fetchTicker(symbol).execute();
+        HuoBiTicker huoBiTicker = response.body();
+        if (StringUtils.isBlank(huoBiTicker.status) || !StringUtils.equals("ok", huoBiTicker.status.toLowerCase())) {
+            throw new IOException("huo bi: fetch ticker failed");
         }
 
+        ticker.buy = huoBiTicker.getBuy();
+        ticker.sell = huoBiTicker.getSell();
+
         return ticker;
+    }
+
+    @Override
+    protected String type2Symbol(Type type) {
+        if (type == Type.ETH_USDT) {
+            return "ethusdt";
+        }
+        return null;
     }
 }
