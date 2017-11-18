@@ -76,9 +76,23 @@ public class BinanceMarketApi extends AbstractMarketApi {
     }
 
     @Override
+    public void cancelOrder(Type type, String orderId) throws IOException {
+        mBinanceApi.cancelOrder(type2Symbol(type), System.currentTimeMillis());
+    }
+
+    @Override
+    public void withdraw(String address, Type type, float quantity) throws Exception {
+
+    }
+
+    @Override
     protected String type2Symbol(Type type) {
         if (type == Type.ETH_USDT) {
             return "ethusdt";
+        }
+
+        if (type == Type.USDT_ETH) {
+            return "usdteth";
         }
 
         return null;

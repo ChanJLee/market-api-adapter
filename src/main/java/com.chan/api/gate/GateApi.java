@@ -2,6 +2,7 @@ package com.chan.api.gate;
 
 import com.chan.api.gate.model.GatePlaceOrderResponse;
 import com.chan.api.gate.model.GateTicker;
+import com.google.gson.JsonElement;
 import retrofit.Call;
 import retrofit.http.*;
 
@@ -20,4 +21,10 @@ public interface GateApi {
     Call<GatePlaceOrderResponse> placeOrder(@FieldMap Map<String, String> entries,
                                             @Header("Key") String key,
                                             @Header("Sign") String signature);
+
+    @POST("api2/1/private/cancelOrder")
+    @FormUrlEncoded
+    Call<JsonElement> cancelOrder(@FieldMap Map<String, String> entries,
+                                  @Header("Key") String key,
+                                  @Header("Sign") String signature);
 }

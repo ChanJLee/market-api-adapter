@@ -2,11 +2,9 @@ package com.chan.api.binance;
 
 import com.chan.api.binance.http.BinanceApiConstants;
 import com.chan.api.binance.model.*;
+import com.google.gson.JsonElement;
 import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Headers;
-import retrofit.http.POST;
-import retrofit.http.Query;
+import retrofit.http.*;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ public interface BinanceApi {
     Call<List<BinanceTicker>> fetchTickers();
 
     @Headers(BinanceApiConstants.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
-    @POST("/api/v3/order")
+    @POST("api/v3/order")
     Call<BinancePlaceOrderResponse> placeOrder(@Query("symbol") String symbol,
                                                @Query("side") OrderSide side,
                                                @Query("type") OrderType type,
@@ -27,4 +25,7 @@ public interface BinanceApi {
                                                @Query("quantity") float quantity,
                                                @Query("price") float price,
                                                @Query("timestamp") long timestamp);
+
+    @DELETE("api/v3/order")
+    Call<JsonElement> cancelOrder(@Query("symbol") String symbol, @Query("timestamp") long timestamp);
 }

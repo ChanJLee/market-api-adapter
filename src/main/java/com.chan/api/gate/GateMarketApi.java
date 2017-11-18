@@ -11,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import retrofit.Response;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,8 +60,28 @@ public class GateMarketApi extends AbstractMarketApi {
             response.id = gatePlaceOrderResponseResponse.body().orderNumber;
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IOException("gate place order failed: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void cancelOrder(Type type, String orderId) throws IOException {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("orderNumber", orderId);
+        map.put("currencyPair", type2Symbol(type));
+
+        try {
+            mGateApi.cancelOrder(map, mAccessKey, MiscUtils.signature(map, mSecretKey)).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("gate cancel order failed: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void withdraw(String address, Type type, float quantity) throws Exception {
+
     }
 
     @Override
@@ -67,6 +89,11 @@ public class GateMarketApi extends AbstractMarketApi {
         if (type == Type.ETH_USDT) {
             return "eth_usdt";
         }
+
+        if (type == Type.USDT_ETH) {
+            return "usdt_eth";
+        }
+
         return null;
     }
 }

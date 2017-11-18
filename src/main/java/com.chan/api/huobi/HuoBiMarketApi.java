@@ -60,10 +60,25 @@ public class HuoBiMarketApi extends AbstractMarketApi {
     }
 
     @Override
+    public void cancelOrder(Type type, String orderId) throws IOException {
+        mHuoBiApi.cancelOrder(orderId);
+    }
+
+    @Override
+    public void withdraw(String address, Type type, float quantity) throws Exception {
+
+    }
+
+    @Override
     protected String type2Symbol(Type type) {
         if (type == Type.ETH_USDT) {
             return "ethusdt";
         }
+
+        if (type == Type.USDT_ETH) {
+            return "usdteth";
+        }
+
         return null;
     }
 }

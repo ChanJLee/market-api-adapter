@@ -16,4 +16,7 @@ public interface HuoBiApi {
 
     @POST("v1/order/orders/{id}/place")
     Call<JsonElement> placeOrder(@Path("id") long id);
+
+    @POST("v1/order/orders/{id}/submitcancel")
+    Call<JsonElement> cancelOrder(@Path("id") String id);
 }
