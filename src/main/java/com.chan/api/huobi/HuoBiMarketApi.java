@@ -1,6 +1,7 @@
 package com.chan.api.huobi;
 
 import com.chan.api.AbstractMarketApi;
+import com.chan.api.huobi.model.CreateOrderParams;
 import com.chan.api.huobi.model.HuoBiTicker;
 import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
@@ -15,10 +16,12 @@ import java.io.IOException;
  */
 public class HuoBiMarketApi extends AbstractMarketApi {
     private HuoBiApi mHuoBiApi;
+    private String mAccountId;
 
-    public HuoBiMarketApi(String accessKey, String secretKey) {
+    public HuoBiMarketApi(String accessKey, String secretKey, String accountId) {
         super(accessKey, secretKey, "https://api.huobi.pro/");
         mHuoBiApi = createApi(HuoBiApi.class);
+        mAccountId = accountId;
     }
 
     @Override
@@ -40,8 +43,20 @@ public class HuoBiMarketApi extends AbstractMarketApi {
     }
 
     @Override
-    public PlaceOrderResponse placeOrder(Type type, float price, float num) {
-        return null;
+    public PlaceOrderResponse placeOrder(Type type, float price, float quantity) throws IOException {
+        PlaceOrderResponse response = new PlaceOrderResponse();
+
+        CreateOrderParams createOrderParams = new CreateOrderParams();
+        createOrderParams.accountId = mAccountId;
+        createOrderParams.amount = String.valueOf(quantity);
+        createOrderParams.price = String.valueOf(price);
+        createOrderParams.symbol = type2Symbol(type);
+        createOrderParams.type = CreateOrderParams.OrderType.BUY_LIMIT;
+
+        long orderId = mHuoBiApi.createOrder(createOrderParams).execute().body();
+        response.id = String.valueOf(orderId);
+        mHuoBiApi.placeOrder(orderId).execute();
+        return response;
     }
 
     @Override
