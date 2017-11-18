@@ -1,9 +1,12 @@
 package com.chan.api.binance;
 
 import com.chan.api.AbstractMarketApi;
-import com.chan.api.binance.model.BinanceTicker;
+import com.chan.api.binance.http.AuthenticationInterceptor;
+import com.chan.api.binance.model.*;
+import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
+import com.squareup.okhttp.OkHttpClient;
 import org.apache.commons.lang.StringUtils;
 import retrofit.Response;
 
@@ -19,6 +22,13 @@ public class BinanceMarketApi extends AbstractMarketApi {
     public BinanceMarketApi(String accessKey, String secretKey) {
         super(accessKey, secretKey, "https://www.binance.com");
         mBinanceApi = createApi(BinanceApi.class);
+    }
+
+    @Override
+    protected OkHttpClient createOkHttpClient() {
+        OkHttpClient okHttpClient = super.createOkHttpClient();
+        okHttpClient.interceptors().add(new AuthenticationInterceptor(mAccessKey, mSecretKey));
+        return okHttpClient;
     }
 
     @Override
@@ -46,6 +56,23 @@ public class BinanceMarketApi extends AbstractMarketApi {
         }
 
         throw new IOException("binance: fetch ticker failed");
+    }
+
+    @Override
+    public PlaceOrderResponse placeOrder(Type type, float price, float quantity) throws IOException {
+
+        String symbol = type2Symbol(type);
+        PlaceOrderResponse response = new PlaceOrderResponse();
+        Response<BinancePlaceOrderResponse> binancePlaceOrderResponseResponse = mBinanceApi.placeOrder(
+                symbol,
+                OrderSide.BUY,
+                OrderType.LIMIT,
+                TimeInForce.GTC,
+                quantity,
+                price,
+                System.currentTimeMillis()).execute();
+        response.id = binancePlaceOrderResponseResponse.body().orderId;
+        return response;
     }
 
     @Override

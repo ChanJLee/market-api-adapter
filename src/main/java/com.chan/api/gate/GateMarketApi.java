@@ -2,6 +2,7 @@ package com.chan.api.gate;
 
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.gate.model.GateTicker;
+import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +38,13 @@ public class GateMarketApi extends AbstractMarketApi {
         ticker.buy = gateTicker.highestBid;
 
         return ticker;
+    }
+
+    @Override
+    public PlaceOrderResponse placeOrder(Type type, float price, float num) throws IOException {
+        PlaceOrderResponse response = new PlaceOrderResponse();
+
+        return response;
     }
 
     @Override

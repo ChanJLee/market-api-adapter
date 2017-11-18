@@ -1,9 +1,12 @@
 package com.chan.api.binance;
 
-import com.chan.api.binance.model.BinanceTicker;
+import com.chan.api.binance.http.BinanceApiConstants;
+import com.chan.api.binance.model.*;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Headers;
+import retrofit.http.POST;
+import retrofit.http.Query;
 
 import java.util.List;
 
@@ -12,7 +15,16 @@ import java.util.List;
  */
 public interface BinanceApi {
 
-    @Headers({"User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"})
     @GET("api/v1/ticker/allBookTickers")
     Call<List<BinanceTicker>> fetchTickers();
+
+    @Headers(BinanceApiConstants.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @POST("/api/v3/order")
+    Call<BinancePlaceOrderResponse> placeOrder(@Query("symbol") String symbol,
+                                               @Query("side") OrderSide side,
+                                               @Query("type") OrderType type,
+                                               @Query("timeInForce") TimeInForce timeInForce,
+                                               @Query("quantity") float quantity,
+                                               @Query("price") float price,
+                                               @Query("timestamp") long timestamp);
 }

@@ -1,5 +1,6 @@
 package com.chan.api;
 
+import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
 
@@ -10,4 +11,6 @@ import java.io.IOException;
  */
 public interface MarketApi {
     Ticker fetchTicker(Type type) throws IOException;
+
+    PlaceOrderResponse placeOrder(Type type, float price, float quantity) throws IOException;
 }

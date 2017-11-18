@@ -2,6 +2,7 @@ package com.chan.api.huobi;
 
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.huobi.model.HuoBiTicker;
+import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +37,11 @@ public class HuoBiMarketApi extends AbstractMarketApi {
         ticker.sell = huoBiTicker.getSell();
 
         return ticker;
+    }
+
+    @Override
+    public PlaceOrderResponse placeOrder(Type type, float price, float num) {
+        return null;
     }
 
     @Override

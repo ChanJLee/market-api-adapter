@@ -19,12 +19,15 @@ public abstract class AbstractMarketApi implements MarketApi {
         mSecretKey = secretKey;
         mBaseUrl = baseUrl;
 
-        OkHttpClient okHttpClient = new OkHttpClient();
         mRetrofit = new Retrofit.Builder()
-                .client(okHttpClient)
+                .client(createOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(baseUrl)
                 .build();
+    }
+
+    protected OkHttpClient createOkHttpClient() {
+        return new OkHttpClient();
     }
 
     protected <T> T createApi(Class<T> apiClazz) {
