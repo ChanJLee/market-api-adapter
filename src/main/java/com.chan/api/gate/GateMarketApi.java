@@ -4,10 +4,7 @@ import com.chan.api.AbstractMarketApi;
 import com.chan.api.gate.model.GatePlaceOrderResponse;
 import com.chan.api.gate.model.GateTicker;
 import com.chan.api.gate.utils.MiscUtils;
-import com.chan.model.Action;
-import com.chan.model.PlaceOrderResponse;
-import com.chan.model.Ticker;
-import com.chan.model.Type;
+import com.chan.model.*;
 import org.apache.commons.lang.StringUtils;
 import retrofit.Call;
 import retrofit.Response;
@@ -90,6 +87,11 @@ public class GateMarketApi extends AbstractMarketApi {
         map.put("address", address);
 
         mGateApi.withdraw(map, mAccessKey, MiscUtils.signature(map, mSecretKey)).execute();
+    }
+
+    @Override
+    public Balance fetchBalance() throws Exception {
+        return null;
     }
 
     @Override

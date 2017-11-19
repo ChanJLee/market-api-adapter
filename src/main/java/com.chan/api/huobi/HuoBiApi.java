@@ -1,11 +1,11 @@
 package com.chan.api.huobi;
 
-import com.chan.api.huobi.model.CreateOrderParams;
-import com.chan.api.huobi.model.HuoBiTicker;
-import com.chan.api.huobi.model.WithdrawParams;
+import com.chan.api.huobi.model.*;
 import com.google.gson.JsonElement;
 import retrofit.Call;
 import retrofit.http.*;
+
+import java.util.List;
 
 public interface HuoBiApi {
 
@@ -23,4 +23,10 @@ public interface HuoBiApi {
 
     @POST("v1/dw/withdraw-virtual/create")
     Call<JsonElement> withdraw(@Body WithdrawParams params);
+
+    @GET("v1/account/accounts")
+    Call<List<Account>> fetchAccounts();
+
+    @GET("v1/account/accounts/{id}/balance")
+    Call<HuoBiBalance> fetchBalance(@Path("id") long accountId);
 }

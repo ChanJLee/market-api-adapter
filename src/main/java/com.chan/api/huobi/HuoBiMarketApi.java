@@ -1,29 +1,23 @@
 package com.chan.api.huobi;
 
 import com.chan.api.AbstractMarketApi;
-import com.chan.api.huobi.model.CreateOrderParams;
-import com.chan.api.huobi.model.HuoBiTicker;
-import com.chan.api.huobi.model.WithdrawParams;
-import com.chan.model.Action;
-import com.chan.model.PlaceOrderResponse;
-import com.chan.model.Ticker;
-import com.chan.model.Type;
+import com.chan.api.huobi.model.*;
+import com.chan.model.*;
 import org.apache.commons.lang.StringUtils;
 import retrofit.Response;
 
 import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by chan on 2017/11/14.
  */
 public class HuoBiMarketApi extends AbstractMarketApi {
     private HuoBiApi mHuoBiApi;
-    private String mAccountId;
 
-    public HuoBiMarketApi(String accessKey, String secretKey, String accountId) {
+    public HuoBiMarketApi(String accessKey, String secretKey) {
         super(accessKey, secretKey, "https://api.huobi.pro/");
         mHuoBiApi = createApi(HuoBiApi.class);
-        mAccountId = accountId;
     }
 
     @Override
@@ -49,7 +43,7 @@ public class HuoBiMarketApi extends AbstractMarketApi {
         PlaceOrderResponse response = new PlaceOrderResponse();
 
         CreateOrderParams createOrderParams = new CreateOrderParams();
-        createOrderParams.accountId = mAccountId;
+        createOrderParams.accountId = String.valueOf(fetchAccountId());
         createOrderParams.amount = String.valueOf(quantity);
         createOrderParams.price = String.valueOf(price);
         createOrderParams.symbol = type2Symbol(type);
@@ -74,6 +68,30 @@ public class HuoBiMarketApi extends AbstractMarketApi {
         params.amount = String.valueOf(quantity);
         params.currency = type2Symbol(type);
         mHuoBiApi.withdraw(params).execute();
+    }
+
+    @Override
+    public Balance fetchBalance() throws Exception {
+        Balance balance = new Balance();
+        HuoBiBalance huoBiBalance = mHuoBiApi.fetchBalance(fetchAccountId()).execute().body();
+        for (HuoBiBalance.HuoBiBalanceDetail detail : huoBiBalance.getHuoBiBalanceDetails()) {
+            Balance.Detail balanceDetail = new Balance.Detail();
+            balanceDetail.available = detail.isAvailable();
+            balanceDetail.amount = detail.getAmount();
+            balanceDetail.type = detail.getType();
+            Map<Type, Balance.Detail> target = detail.isAvailable() ? balance.available : balance.frozen;
+            target.put(balanceDetail.type, balanceDetail);
+        }
+
+        return balance;
+    }
+
+    private long fetchAccountId() throws IOException {
+        List<Account> accounts = mHuoBiApi.fetchAccounts().execute().body();
+        if (accounts == null || accounts.isEmpty()) {
+            throw new IOException("fetch account id failed");
+        }
+        return accounts.get(0).id;
     }
 
     @Override

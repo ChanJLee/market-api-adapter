@@ -7,5 +7,7 @@ public enum Type {
     ETH_USDT,
     USDT_ETH,
     ETH,
-    USDT
+    USDT,
+    CNY,
+    UNKNOWN;
 }

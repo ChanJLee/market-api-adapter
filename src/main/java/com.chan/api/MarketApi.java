@@ -1,9 +1,6 @@
 package com.chan.api;
 
-import com.chan.model.Action;
-import com.chan.model.PlaceOrderResponse;
-import com.chan.model.Ticker;
-import com.chan.model.Type;
+import com.chan.model.*;
 
 import java.io.IOException;
 
@@ -50,4 +47,6 @@ public interface MarketApi {
      * @throws Exception
      */
     void withdraw(String address, Type type, float quantity) throws Exception;
+
+    Balance fetchBalance() throws Exception;
 }

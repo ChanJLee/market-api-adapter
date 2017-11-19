@@ -3,10 +3,7 @@ package com.chan.api.binance;
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.binance.http.AuthenticationInterceptor;
 import com.chan.api.binance.model.*;
-import com.chan.model.Action;
-import com.chan.model.PlaceOrderResponse;
-import com.chan.model.Ticker;
-import com.chan.model.Type;
+import com.chan.model.*;
 import com.squareup.okhttp.OkHttpClient;
 import org.apache.commons.lang.StringUtils;
 import retrofit.Response;
@@ -92,6 +89,11 @@ public class BinanceMarketApi extends AbstractMarketApi {
                 String.valueOf(quantity),
                 System.currentTimeMillis())
                 .execute();
+    }
+
+    @Override
+    public Balance fetchBalance() throws Exception {
+        return null;
     }
 
     @Override
