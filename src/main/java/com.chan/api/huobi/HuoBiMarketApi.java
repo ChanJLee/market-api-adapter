@@ -4,6 +4,7 @@ import com.chan.api.AbstractMarketApi;
 import com.chan.api.huobi.model.CreateOrderParams;
 import com.chan.api.huobi.model.HuoBiTicker;
 import com.chan.api.huobi.model.WithdrawParams;
+import com.chan.model.Action;
 import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
@@ -44,7 +45,7 @@ public class HuoBiMarketApi extends AbstractMarketApi {
     }
 
     @Override
-    public PlaceOrderResponse placeOrder(Type type, float price, float quantity) throws IOException {
+    public PlaceOrderResponse placeOrder(Type type, Action action, float price, float quantity) throws IOException {
         PlaceOrderResponse response = new PlaceOrderResponse();
 
         CreateOrderParams createOrderParams = new CreateOrderParams();
@@ -52,7 +53,8 @@ public class HuoBiMarketApi extends AbstractMarketApi {
         createOrderParams.amount = String.valueOf(quantity);
         createOrderParams.price = String.valueOf(price);
         createOrderParams.symbol = type2Symbol(type);
-        createOrderParams.type = CreateOrderParams.OrderType.BUY_LIMIT;
+        createOrderParams.type = action == Action.BUY ?
+                CreateOrderParams.OrderType.BUY_LIMIT : CreateOrderParams.OrderType.SELL_LIMIT;
 
         long orderId = mHuoBiApi.createOrder(createOrderParams).execute().body();
         response.id = String.valueOf(orderId);

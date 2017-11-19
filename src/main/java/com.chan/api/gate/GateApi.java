@@ -16,11 +16,17 @@ public interface GateApi {
     @GET("api2/1/ticker/{symbol}")
     Call<GateTicker> fetchTicker(@Path("symbol") String symbol);
 
-    @FormUrlEncoded
     @POST("api2/1/private/buy")
-    Call<GatePlaceOrderResponse> placeOrder(@FieldMap Map<String, String> entries,
-                                            @Header("Key") String key,
-                                            @Header("Sign") String signature);
+    @FormUrlEncoded
+    Call<GatePlaceOrderResponse> buy(@FieldMap Map<String, String> entries,
+                                     @Header("Key") String key,
+                                     @Header("Sign") String signature);
+
+    @POST("api2/1/private/sell")
+    @FormUrlEncoded
+    Call<GatePlaceOrderResponse> sell(@FieldMap Map<String, String> entries,
+                                      @Header("Key") String key,
+                                      @Header("Sign") String signature);
 
     @POST("api2/1/private/cancelOrder")
     @FormUrlEncoded

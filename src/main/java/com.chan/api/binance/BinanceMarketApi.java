@@ -3,6 +3,7 @@ package com.chan.api.binance;
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.binance.http.AuthenticationInterceptor;
 import com.chan.api.binance.model.*;
+import com.chan.model.Action;
 import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
@@ -59,13 +60,13 @@ public class BinanceMarketApi extends AbstractMarketApi {
     }
 
     @Override
-    public PlaceOrderResponse placeOrder(Type type, float price, float quantity) throws IOException {
+    public PlaceOrderResponse placeOrder(Type type, Action action, float price, float quantity) throws IOException {
 
         String symbol = type2Symbol(type);
         PlaceOrderResponse response = new PlaceOrderResponse();
         Response<BinancePlaceOrderResponse> binancePlaceOrderResponseResponse = mBinanceApi.placeOrder(
                 symbol,
-                OrderSide.BUY,
+                action == Action.BUY ? OrderSide.BUY : OrderSide.SELL,
                 OrderType.LIMIT,
                 TimeInForce.GTC,
                 quantity,

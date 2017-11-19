@@ -1,5 +1,6 @@
 package com.chan.api;
 
+import com.chan.model.Action;
 import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
@@ -20,15 +21,16 @@ public interface MarketApi {
     Ticker fetchTicker(Type type) throws IOException;
 
     /**
-     * 下单 buy
+     * 下单
      *
      * @param type
+     * @param action   动作：卖，买
      * @param price    买入价格
      * @param quantity 买入数量
      * @return
      * @throws IOException
      */
-    PlaceOrderResponse placeOrder(Type type, float price, float quantity) throws IOException;
+    PlaceOrderResponse placeOrder(Type type, Action action, float price, float quantity) throws IOException;
 
     /**
      * 撤销订单

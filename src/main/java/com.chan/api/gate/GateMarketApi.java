@@ -4,15 +4,15 @@ import com.chan.api.AbstractMarketApi;
 import com.chan.api.gate.model.GatePlaceOrderResponse;
 import com.chan.api.gate.model.GateTicker;
 import com.chan.api.gate.utils.MiscUtils;
+import com.chan.model.Action;
 import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
 import org.apache.commons.lang.StringUtils;
+import retrofit.Call;
 import retrofit.Response;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +47,7 @@ public class GateMarketApi extends AbstractMarketApi {
     }
 
     @Override
-    public PlaceOrderResponse placeOrder(Type type, float price, float quantity) throws IOException {
+    public PlaceOrderResponse placeOrder(Type type, Action action, float price, float quantity) throws IOException {
         PlaceOrderResponse response = new PlaceOrderResponse();
         Map<String, String> map = new HashMap<>();
         map.put("currencyPair", type2Symbol(type));
@@ -55,8 +55,11 @@ public class GateMarketApi extends AbstractMarketApi {
         map.put("amount", String.valueOf(quantity));
 
         try {
-            Response<GatePlaceOrderResponse> gatePlaceOrderResponseResponse = mGateApi.placeOrder(map, mAccessKey,
-                    MiscUtils.signature(map, mSecretKey)).execute();
+            Call<GatePlaceOrderResponse> call = action == Action.BUY ?
+                    mGateApi.buy(map, mAccessKey, MiscUtils.signature(map, mSecretKey)) :
+                    mGateApi.sell(map, mAccessKey, MiscUtils.signature(map, mSecretKey));
+
+            Response<GatePlaceOrderResponse> gatePlaceOrderResponseResponse = call.execute();
             response.id = gatePlaceOrderResponseResponse.body().orderNumber;
             return response;
         } catch (Exception e) {
