@@ -3,11 +3,11 @@ package com.chan.api.huobi;
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.huobi.model.*;
 import com.chan.model.*;
-import org.apache.commons.lang.StringUtils;
 import retrofit.Response;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chan on 2017/11/14.
@@ -28,7 +28,7 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
         Response<HuoBiTicker> response = mHuoBiApi.fetchTicker(symbol).execute();
         HuoBiTicker huoBiTicker = response.body();
-        if (StringUtils.isBlank(huoBiTicker.status) || !StringUtils.equals("ok", huoBiTicker.status.toLowerCase())) {
+        if (!huoBiTicker.isSuccess()) {
             throw new IOException("huo bi: fetch ticker failed");
         }
 
@@ -72,8 +72,12 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
     @Override
     public Balance fetchBalance() throws Exception {
-        Balance balance = new Balance();
         HuoBiBalance huoBiBalance = mHuoBiApi.fetchBalance(fetchAccountId()).execute().body();
+        if (!huoBiBalance.isSuccess()) {
+            throw new IOException("huo bi: fetch balance failed");
+        }
+
+        Balance balance = new Balance();
         for (HuoBiBalance.HuoBiBalanceDetail detail : huoBiBalance.getHuoBiBalanceDetails()) {
             Balance.Detail balanceDetail = new Balance.Detail();
             balanceDetail.available = detail.isAvailable();

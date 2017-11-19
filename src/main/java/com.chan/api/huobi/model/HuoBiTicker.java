@@ -5,8 +5,7 @@ import java.util.List;
 /**
  * Created by chan on 2017/11/15.
  */
-public class HuoBiTicker {
-    public String status;
+public class HuoBiTicker extends HuoBiModel {
     public HuoBiTickerInternal tick;
 
     public float getBuy() {
