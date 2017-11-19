@@ -48,5 +48,11 @@ public interface MarketApi {
      */
     void withdraw(String address, Type type, float quantity) throws Exception;
 
+    /**
+     * 获取账户信息
+     *
+     * @return
+     * @throws Exception
+     */
     Balance fetchBalance() throws Exception;
 }
