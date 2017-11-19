@@ -2,6 +2,7 @@ package com.chan.api.huobi;
 
 import com.chan.api.huobi.model.CreateOrderParams;
 import com.chan.api.huobi.model.HuoBiTicker;
+import com.chan.api.huobi.model.WithdrawParams;
 import com.google.gson.JsonElement;
 import retrofit.Call;
 import retrofit.http.*;
@@ -19,4 +20,7 @@ public interface HuoBiApi {
 
     @POST("v1/order/orders/{id}/submitcancel")
     Call<JsonElement> cancelOrder(@Path("id") String id);
+
+    @POST("v1/dw/withdraw-virtual/create")
+    Call<JsonElement> withdraw(@Body WithdrawParams params);
 }

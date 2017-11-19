@@ -5,5 +5,7 @@ package com.chan.model;
  */
 public enum Type {
     ETH_USDT,
-    USDT_ETH
+    USDT_ETH,
+    ETH,
+    USDT
 }

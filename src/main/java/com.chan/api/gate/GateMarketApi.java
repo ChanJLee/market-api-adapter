@@ -81,7 +81,12 @@ public class GateMarketApi extends AbstractMarketApi {
 
     @Override
     public void withdraw(String address, Type type, float quantity) throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("currency", type2Symbol(type));
+        map.put("amount", String.valueOf(quantity));
+        map.put("address", address);
 
+        mGateApi.withdraw(map, mAccessKey, MiscUtils.signature(map, mSecretKey)).execute();
     }
 
     @Override
@@ -92,6 +97,14 @@ public class GateMarketApi extends AbstractMarketApi {
 
         if (type == Type.USDT_ETH) {
             return "usdt_eth";
+        }
+
+        if (type == Type.USDT) {
+            return "usdt";
+        }
+
+        if (type == Type.ETH) {
+            return "eth";
         }
 
         return null;

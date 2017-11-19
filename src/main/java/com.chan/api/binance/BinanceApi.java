@@ -28,4 +28,11 @@ public interface BinanceApi {
 
     @DELETE("api/v3/order")
     Call<JsonElement> cancelOrder(@Query("symbol") String symbol, @Query("timestamp") long timestamp);
+
+    @Headers(BinanceApiConstants.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @POST("/wapi/v1/withdraw.html")
+    Call<JsonElement> withdraw(@Query("asset") String asset,
+                               @Query("address") String address,
+                               @Query("amount") String amount,
+                               @Query("timestamp") long timestamp);
 }

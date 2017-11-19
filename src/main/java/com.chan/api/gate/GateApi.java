@@ -27,4 +27,10 @@ public interface GateApi {
     Call<JsonElement> cancelOrder(@FieldMap Map<String, String> entries,
                                   @Header("Key") String key,
                                   @Header("Sign") String signature);
+
+    @POST("api2/1/private/withdraw")
+    @FormUrlEncoded
+    Call<JsonElement> withdraw(@FieldMap Map<String, String> entries,
+                               @Header("Key") String key,
+                               @Header("Sign") String signature);
 }

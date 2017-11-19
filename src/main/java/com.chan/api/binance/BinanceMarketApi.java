@@ -77,12 +77,20 @@ public class BinanceMarketApi extends AbstractMarketApi {
 
     @Override
     public void cancelOrder(Type type, String orderId) throws IOException {
-        mBinanceApi.cancelOrder(type2Symbol(type), System.currentTimeMillis());
+        mBinanceApi.cancelOrder(
+                type2Symbol(type),
+                System.currentTimeMillis())
+                .execute();
     }
 
     @Override
     public void withdraw(String address, Type type, float quantity) throws Exception {
-
+        mBinanceApi.withdraw(
+                type2Symbol(type),
+                address,
+                String.valueOf(quantity),
+                System.currentTimeMillis())
+                .execute();
     }
 
     @Override
@@ -93,6 +101,14 @@ public class BinanceMarketApi extends AbstractMarketApi {
 
         if (type == Type.USDT_ETH) {
             return "usdteth";
+        }
+
+        if (type == Type.ETH) {
+            return "ETH";
+        }
+
+        if (type == Type.USDT) {
+            return "USDT";
         }
 
         return null;

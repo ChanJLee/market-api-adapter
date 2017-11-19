@@ -3,6 +3,7 @@ package com.chan.api.huobi;
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.huobi.model.CreateOrderParams;
 import com.chan.api.huobi.model.HuoBiTicker;
+import com.chan.api.huobi.model.WithdrawParams;
 import com.chan.model.PlaceOrderResponse;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
@@ -66,7 +67,11 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
     @Override
     public void withdraw(String address, Type type, float quantity) throws Exception {
-
+        WithdrawParams params = new WithdrawParams();
+        params.address = address;
+        params.amount = String.valueOf(quantity);
+        params.currency = type2Symbol(type);
+        mHuoBiApi.withdraw(params).execute();
     }
 
     @Override
@@ -77,6 +82,14 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
         if (type == Type.USDT_ETH) {
             return "usdteth";
+        }
+
+        if (type == Type.ETH) {
+            return "eth";
+        }
+
+        if (type == Type.USDT) {
+            return "usdt";
         }
 
         return null;
