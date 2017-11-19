@@ -105,11 +105,11 @@ public class GateMarketApi extends AbstractMarketApi {
         }
         Balance balance = new Balance();
 
-        if (gateBalance.available.hasContent()) {
+        if (gateBalance.available != null && !gateBalance.available.isEmpty()) {
             addBalance(balance.available, gateBalance.available, true, Type.CNY, Type.ETH, Type.USDT);
         }
 
-        if (gateBalance.locked.hasContent()) {
+        if (gateBalance.locked != null && !gateBalance.locked.isEmpty()) {
             addBalance(balance.frozen, gateBalance.locked, false, Type.CNY, Type.ETH, Type.USDT);
         }
 
@@ -117,15 +117,20 @@ public class GateMarketApi extends AbstractMarketApi {
     }
 
     private void addBalance(Map<Type, Balance.Detail> target,
-                            GateBalance.GateBalanceInternal gateBalanceInternal,
+                            Map<String, String> balanceMap,
                             boolean available,
                             Type... types) {
         for (Type type : types) {
             try {
+                String typeUpper = type2Symbol(type).toUpperCase();
+                if (!balanceMap.containsKey(typeUpper)) {
+                    continue;
+                }
+
                 Balance.Detail detail = new Balance.Detail();
                 detail.type = type;
                 detail.available = available;
-                detail.amount = gateBalanceInternal.getAmount(type2Symbol(detail.type));
+                detail.amount = Float.valueOf(balanceMap.get(typeUpper));
                 target.put(detail.type, detail);
             } catch (Exception e) {
                 e.printStackTrace();

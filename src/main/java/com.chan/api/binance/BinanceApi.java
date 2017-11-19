@@ -35,4 +35,9 @@ public interface BinanceApi {
                                @Query("address") String address,
                                @Query("amount") String amount,
                                @Query("timestamp") long timestamp);
+
+
+    @Headers(BinanceApiConstants.ENDPOINT_SECURITY_TYPE_SIGNED_HEADER)
+    @GET("/api/v3/account")
+    Call<Account> getAccount(@Query("timestamp") Long timestamp);
 }

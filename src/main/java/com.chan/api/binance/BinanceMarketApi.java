@@ -93,7 +93,28 @@ public class BinanceMarketApi extends AbstractMarketApi {
 
     @Override
     public Balance fetchBalance() throws Exception {
-        return null;
+        Account account = mBinanceApi.getAccount(System.currentTimeMillis()).execute().body();
+        Balance balance = new Balance();
+        for (Account.BalancesDetail detail : account.balances) {
+            Type type = detail.getType();
+            if (detail.getFree() > 0) {
+                Balance.Detail balanceDetail = new Balance.Detail();
+                balanceDetail.type = type;
+                balanceDetail.amount = detail.getFree();
+                balanceDetail.available = true;
+                balance.available.put(type, balanceDetail);
+            }
+
+            if (detail.getLocked() > 0) {
+                Balance.Detail balanceDetail = new Balance.Detail();
+                balanceDetail.type = type;
+                balanceDetail.amount = detail.getFree();
+                balanceDetail.available = false;
+                balance.frozen.put(type, balanceDetail);
+            }
+        }
+
+        return balance;
     }
 
     @Override
