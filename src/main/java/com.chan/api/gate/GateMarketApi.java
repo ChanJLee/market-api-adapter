@@ -1,6 +1,7 @@
 package com.chan.api.gate;
 
 import com.chan.api.AbstractMarketApi;
+import com.chan.api.gate.model.GateBalance;
 import com.chan.api.gate.model.GatePlaceOrderResponse;
 import com.chan.api.gate.model.GateTicker;
 import com.chan.api.gate.utils.MiscUtils;
@@ -91,7 +92,45 @@ public class GateMarketApi extends AbstractMarketApi {
 
     @Override
     public Balance fetchBalance() throws Exception {
-        return null;
+        Map<String, String> map = new HashMap<>();
+        map.put("api_key", mAccessKey);
+        String sign = MiscUtils.buildMysignV1(map, mSecretKey);
+        map.put("sign", sign);
+
+        GateBalance gateBalance = mGateApi.fetchBalance(map, mAccessKey, MiscUtils.signature(map, mSecretKey))
+                .execute().body();
+
+        if (gateBalance == null || !gateBalance.isSuccess()) {
+            throw new IOException("gate fetch balance failed");
+        }
+        Balance balance = new Balance();
+
+        if (gateBalance.available.hasContent()) {
+            addBalance(balance.available, gateBalance.available, true, Type.CNY, Type.ETH, Type.USDT);
+        }
+
+        if (gateBalance.locked.hasContent()) {
+            addBalance(balance.frozen, gateBalance.locked, false, Type.CNY, Type.ETH, Type.USDT);
+        }
+
+        return balance;
+    }
+
+    private void addBalance(Map<Type, Balance.Detail> target,
+                            GateBalance.GateBalanceInternal gateBalanceInternal,
+                            boolean available,
+                            Type... types) {
+        for (Type type : types) {
+            try {
+                Balance.Detail detail = new Balance.Detail();
+                detail.type = type;
+                detail.available = available;
+                detail.amount = gateBalanceInternal.getAmount(type2Symbol(detail.type));
+                target.put(detail.type, detail);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -110,6 +149,10 @@ public class GateMarketApi extends AbstractMarketApi {
 
         if (type == Type.ETH) {
             return "eth";
+        }
+
+        if (type == Type.CNY) {
+            return "cny";
         }
 
         return null;

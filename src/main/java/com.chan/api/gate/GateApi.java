@@ -1,5 +1,6 @@
 package com.chan.api.gate;
 
+import com.chan.api.gate.model.GateBalance;
 import com.chan.api.gate.model.GatePlaceOrderResponse;
 import com.chan.api.gate.model.GateTicker;
 import com.google.gson.JsonElement;
@@ -39,4 +40,10 @@ public interface GateApi {
     Call<JsonElement> withdraw(@FieldMap Map<String, String> entries,
                                @Header("Key") String key,
                                @Header("Sign") String signature);
+
+    @GET("api2/1/private/balances")
+    @FormUrlEncoded
+    Call<GateBalance> fetchBalance(@FieldMap Map<String, String> entries,
+                                   @Header("Key") String key,
+                                   @Header("Sign") String signature);
 }

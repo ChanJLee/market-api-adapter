@@ -116,6 +116,10 @@ public class HuoBiMarketApi extends AbstractMarketApi {
             return "usdt";
         }
 
+        if (type == Type.CNY) {
+            return "cny";
+        }
+
         return null;
     }
 }

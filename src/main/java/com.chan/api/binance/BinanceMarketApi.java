@@ -114,6 +114,10 @@ public class BinanceMarketApi extends AbstractMarketApi {
             return "USDT";
         }
 
+        if (type == Type.CNY) {
+            return "CNY";
+        }
+
         return null;
     }
 }
