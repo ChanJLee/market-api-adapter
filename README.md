@@ -1,1 +1,1 @@
-# market-api-adapter
+# adapter
