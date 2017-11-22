@@ -5,6 +5,7 @@ import com.chan.api.binance.BinanceMarketApi;
 import com.chan.api.gate.GateMarketApi;
 import com.chan.api.huobi.HuoBiMarketApi;
 import com.chan.common.preference.Preference;
+import com.chan.model.Balance;
 import com.chan.model.Ticker;
 import com.chan.model.Type;
 
@@ -38,7 +39,10 @@ public class App {
 
             ticker = binanceMarketApi.fetchTicker(Type.ETH_USDT);
             System.out.println("binance ticker: buy " + ticker.buy + " sell " + ticker.sell);
-        } catch (IOException e) {
+
+            Balance balance = huoBiMarketApi.fetchBalance();
+            System.out.println("huo bi balance: " + balance.frozen.size() + " " + balance.available.size());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
