@@ -21,9 +21,9 @@ public class MiscUtils {
     private static final DateTimeFormatter DT_FORMAT = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss");
     private static final ZoneId ZONE_GMT = ZoneId.of("Z");
 
-    public static Map<String, String> signature(String appKey, String appSecretKey, String method, String host, String uri) {
-        Map<String, String> result = new HashMap<>();
 
+    public static void signature(String appKey, String appSecretKey, String method, String
+            host, String uri, Map<String, String> result) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(method.toUpperCase()).append('\n')
                 .append(host.toLowerCase()).append('\n')
@@ -59,8 +59,6 @@ public class MiscUtils {
         byte[] hash = hmacSha256.doFinal(payload.getBytes(StandardCharsets.UTF_8));
         String actualSign = Base64.getEncoder().encodeToString(hash);
         result.put("Signature", actualSign);
-
-        return result;
     }
 
     private static String getTimestamp() {

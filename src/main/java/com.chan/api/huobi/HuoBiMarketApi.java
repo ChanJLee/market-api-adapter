@@ -2,10 +2,12 @@ package com.chan.api.huobi;
 
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.huobi.model.*;
+import com.chan.api.huobi.utils.MiscUtils;
 import com.chan.model.*;
 import retrofit.Response;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +60,7 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
     @Override
     public void cancelOrder(Type type, String orderId) throws IOException {
-        mHuoBiApi.cancelOrder(orderId);
+        mHuoBiApi.cancelOrder(orderId).execute();
     }
 
     @Override
@@ -72,7 +74,19 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
     @Override
     public Balance fetchBalance() throws Exception {
-        HuoBiBalance huoBiBalance = mHuoBiApi.fetchBalance(fetchAccountId()).execute().body();
+        long accountId = fetchAccountId();
+        Map<String, String> signature = new HashMap<>();
+        MiscUtils.signature(
+                mAccessKey,
+                mSecretKey,
+                "GET",
+                "api.huobi.pro",
+                String.format("/v1/account/accounts/%s/balance", accountId),
+                signature
+        );
+
+        //TODO refactor
+        HuoBiBalance huoBiBalance = mHuoBiApi.fetchBalance(fetchAccountId(), signature).execute().body();
         if (!huoBiBalance.isSuccess()) {
             throw new IOException("huo bi: fetch balance failed");
         }
@@ -91,7 +105,21 @@ public class HuoBiMarketApi extends AbstractMarketApi {
     }
 
     private long fetchAccountId() throws IOException {
-        List<Account> accounts = mHuoBiApi.fetchAccounts().execute().body();
+        Map<String, String> signature = new HashMap<>();
+        MiscUtils.signature(
+                mAccessKey,
+                mSecretKey,
+                "GET",
+                "api.huobi.pro",
+                "/v1/account/accounts",
+                signature
+        );
+
+        HuoBiWrapper<List<Account>> wrapper = mHuoBiApi.fetchAccounts(signature).execute().body();
+        if (!wrapper.isSuccess()) {
+            throw new IOException(("fetch account failed"));
+        }
+        List<Account> accounts = wrapper.data;
         if (accounts == null || accounts.isEmpty()) {
             throw new IOException("fetch account id failed");
         }
