@@ -97,7 +97,7 @@ public class BinanceMarketApi extends AbstractMarketApi {
         Balance balance = new Balance();
         for (Account.BalancesDetail detail : account.balances) {
             Type type = detail.getType();
-            if (detail.getFree() > 0) {
+            if (detail.getFree() >= 0 && detail.getType() != Type.UNKNOWN) {
                 Balance.Detail balanceDetail = new Balance.Detail();
                 balanceDetail.type = type;
                 balanceDetail.amount = detail.getFree();
@@ -105,7 +105,7 @@ public class BinanceMarketApi extends AbstractMarketApi {
                 balance.available.put(type, balanceDetail);
             }
 
-            if (detail.getLocked() > 0) {
+            if (detail.getLocked() >= 0 && detail.getType() != Type.UNKNOWN) {
                 Balance.Detail balanceDetail = new Balance.Detail();
                 balanceDetail.type = type;
                 balanceDetail.amount = detail.getFree();

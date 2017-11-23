@@ -25,12 +25,17 @@ public class App {
         Preference preference = Preference.getInstance(new File(args[0]));
         Logger.log("huo bi access key", preference.getString("HUO_BI_ACCESS_KEY"));
         Logger.log("huo bi secret key", preference.getString("HUO_BI_SECRET_KEY"));
+        Logger.log("binance access key", preference.getString("BINANCE_ACCESS_KEY"));
+        Logger.log("binance secret key", preference.getString("BINANCE_SECRET_KEY"));
+        Logger.log("gate access key", preference.getString("GATE_ACCESS_KEY"));
+        Logger.log("gate secret key", preference.getString("GATE_SECRET_KEY"));
+
         MarketApi huoBiMarketApi = new HuoBiMarketApi(preference.getString("HUO_BI_ACCESS_KEY"),
                 preference.getString("HUO_BI_SECRET_KEY"));
-        MarketApi gateMarketApi = new GateMarketApi("8299346f-17ee81c3-8b7fa980-1f1d3",
-                "15342e59-a8bfd7b7-aa124530-407ff");
-        MarketApi binanceMarketApi = new BinanceMarketApi("8299346f-17ee81c3-8b7fa980-1f1d3",
-                "15342e59-a8bfd7b7-aa124530-407ff");
+        MarketApi gateMarketApi = new GateMarketApi(preference.getString("GATE_ACCESS_KEY"),
+                preference.getString("GATE_SECRET_KEY"));
+        MarketApi binanceMarketApi = new BinanceMarketApi(preference.getString("BINANCE_ACCESS_KEY"),
+                preference.getString("BINANCE_SECRET_KEY"));
 
         try {
             Ticker ticker = huoBiMarketApi.fetchTicker(Type.ETH_USDT);
@@ -55,8 +60,8 @@ public class App {
                         .getValue().amount + " " + entry.getValue().type);
             }
 
-            balance = gateMarketApi.fetchBalance();
-            System.out.println("gate balance");
+            balance = binanceMarketApi.fetchBalance();
+            System.out.println("binance balance");
             System.out.println("frozen");
             for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
                 System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
@@ -67,6 +72,20 @@ public class App {
                 System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
                         .getValue().amount + " " + entry.getValue().type);
             }
+
+
+//            balance = gateMarketApi.fetchBalance();
+//            System.out.println("gate balance");
+//            System.out.println("frozen");
+//            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
+//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+//                        .getValue().amount + " " + entry.getValue().type);
+//            }
+//            System.out.println("available");
+//            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
+//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+//                        .getValue().amount + " " + entry.getValue().type);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
