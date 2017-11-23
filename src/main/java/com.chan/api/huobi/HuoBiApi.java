@@ -18,11 +18,11 @@ public interface HuoBiApi {
 
     @POST("v1/order/orders")
     @Headers("User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36")
-    Call<Long> createOrder(@Body CreateOrderParams request);
+    Call<Long> createOrder(@Body CreateOrderParams request, @QueryMap Map<String, String> signature);
 
     @POST("v1/order/orders/{id}/place")
     @Headers("User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36")
-    Call<JsonElement> placeOrder(@Path("id") long id);
+    Call<JsonElement> placeOrder(@Path("id") long id, @QueryMap Map<String, String> signature);
 
     @POST("v1/order/orders/{id}/submitcancel")
     @Headers("User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36")

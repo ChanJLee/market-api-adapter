@@ -5,7 +5,6 @@ import com.chan.api.huobi.model.*;
 import com.chan.api.huobi.utils.MiscUtils;
 import com.chan.common.log.Logger;
 import com.chan.model.*;
-import com.google.gson.JsonElement;
 import retrofit.Response;
 
 import java.io.IOException;
@@ -55,10 +54,28 @@ public class HuoBiMarketApi extends AbstractMarketApi {
         createOrderParams.symbol = type2Symbol(type);
         createOrderParams.type = action == Action.BUY ?
                 CreateOrderParams.OrderType.BUY_LIMIT : CreateOrderParams.OrderType.SELL_LIMIT;
+        Map<String, String> signature = new HashMap<>();
+        MiscUtils.signature(
+                mAccessKey,
+                mSecretKey,
+                "POST",
+                "api.huobi.pro",
+                "/v1/order/orders",
+                signature
+        );
 
-        long orderId = mHuoBiApi.createOrder(createOrderParams).execute().body();
+        long orderId = mHuoBiApi.createOrder(createOrderParams, signature).execute().body();
         response.id = String.valueOf(orderId);
-        mHuoBiApi.placeOrder(orderId).execute();
+        signature = new HashMap<>();
+        MiscUtils.signature(
+                mAccessKey,
+                mSecretKey,
+                "POST",
+                "api.huobi.pro",
+                String.format("/v1/order/orders/%d/place", orderId),
+                signature
+        );
+        mHuoBiApi.placeOrder(orderId, signature).execute();
         return response;
     }
 

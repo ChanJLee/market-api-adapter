@@ -6,9 +6,7 @@ import com.chan.api.gate.GateMarketApi;
 import com.chan.api.huobi.HuoBiMarketApi;
 import com.chan.common.log.Logger;
 import com.chan.common.preference.Preference;
-import com.chan.model.Balance;
-import com.chan.model.Ticker;
-import com.chan.model.Type;
+import com.chan.model.*;
 
 import java.io.File;
 import java.util.*;
@@ -73,7 +71,6 @@ public class App {
                         .getValue().amount + " " + entry.getValue().type);
             }
 
-
 //            balance = gateMarketApi.fetchBalance();
 //            System.out.println("gate balance");
 //            System.out.println("frozen");
@@ -86,6 +83,9 @@ public class App {
 //                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
 //                        .getValue().amount + " " + entry.getValue().type);
 //            }
+
+            PlaceOrderResponse placeOrderResponse = huoBiMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
+            System.out.println("huo bi buy: " + placeOrderResponse.id);
         } catch (Exception e) {
             e.printStackTrace();
         }
