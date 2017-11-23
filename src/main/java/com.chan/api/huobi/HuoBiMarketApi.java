@@ -98,6 +98,10 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
         Balance balance = new Balance();
         for (HuoBiBalance.HuoBiBalanceDetail detail : response.data.list) {
+            if (detail.getType() == Type.UNKNOWN) {
+                continue;
+            }
+
             Balance.Detail balanceDetail = new Balance.Detail();
             balanceDetail.available = detail.isAvailable();
             balanceDetail.amount = detail.getAmount();

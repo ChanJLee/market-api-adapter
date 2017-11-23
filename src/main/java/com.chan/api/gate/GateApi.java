@@ -41,7 +41,7 @@ public interface GateApi {
                                @Header("Key") String key,
                                @Header("Sign") String signature);
 
-    @GET("api2/1/private/balances")
+    @POST("api2/1/private/balances")
     @FormUrlEncoded
     Call<GateBalance> fetchBalance(@FieldMap Map<String, String> entries,
                                    @Header("Key") String key,

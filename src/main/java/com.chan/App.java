@@ -11,7 +11,7 @@ import com.chan.model.Ticker;
 import com.chan.model.Type;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by chan on 2017/11/22.
@@ -43,7 +43,30 @@ public class App {
             System.out.println("binance ticker: buy " + ticker.buy + " sell " + ticker.sell);
 
             Balance balance = huoBiMarketApi.fetchBalance();
-            System.out.println("huo bi balance: " + balance.frozen.size() + " " + balance.available.size());
+            System.out.println("huo bi balance");
+            System.out.println("frozen");
+            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
+                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+                        .getValue().amount + " " + entry.getValue().type);
+            }
+            System.out.println("available");
+            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
+                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+                        .getValue().amount + " " + entry.getValue().type);
+            }
+
+            balance = gateMarketApi.fetchBalance();
+            System.out.println("gate balance");
+            System.out.println("frozen");
+            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
+                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+                        .getValue().amount + " " + entry.getValue().type);
+            }
+            System.out.println("available");
+            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
+                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+                        .getValue().amount + " " + entry.getValue().type);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by chan on 2017/11/19.
  */
-public class HuoBiBalance extends HuoBiModel {
+public class HuoBiBalance {
     public List<HuoBiBalanceDetail> list;
 
     public static class HuoBiBalanceDetail {
