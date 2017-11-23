@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Created by chan on 2017/11/22.
  */
-public class HuoBiWrapper<T> {
+public class HuoBiResponse<T> {
     public String status;
     public T data;
 

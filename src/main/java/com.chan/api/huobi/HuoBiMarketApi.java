@@ -3,7 +3,9 @@ package com.chan.api.huobi;
 import com.chan.api.AbstractMarketApi;
 import com.chan.api.huobi.model.*;
 import com.chan.api.huobi.utils.MiscUtils;
+import com.chan.common.log.Logger;
 import com.chan.model.*;
+import com.google.gson.JsonElement;
 import retrofit.Response;
 
 import java.io.IOException;
@@ -15,6 +17,8 @@ import java.util.Map;
  * Created by chan on 2017/11/14.
  */
 public class HuoBiMarketApi extends AbstractMarketApi {
+    private static final String TAG = "HuoBiMarketApi";
+
     private HuoBiApi mHuoBiApi;
 
     public HuoBiMarketApi(String accessKey, String secretKey) {
@@ -75,6 +79,7 @@ public class HuoBiMarketApi extends AbstractMarketApi {
     @Override
     public Balance fetchBalance() throws Exception {
         long accountId = fetchAccountId();
+        Logger.log(TAG, "account id: " + accountId);
         Map<String, String> signature = new HashMap<>();
         MiscUtils.signature(
                 mAccessKey,
@@ -85,14 +90,14 @@ public class HuoBiMarketApi extends AbstractMarketApi {
                 signature
         );
 
-        //TODO refactor
-        HuoBiBalance huoBiBalance = mHuoBiApi.fetchBalance(fetchAccountId(), signature).execute().body();
-        if (!huoBiBalance.isSuccess()) {
+        HuoBiResponse<HuoBiBalance> response = mHuoBiApi.fetchBalance(fetchAccountId(), signature).execute()
+                .body();
+        if (!response.isSuccess()) {
             throw new IOException("huo bi: fetch balance failed");
         }
 
         Balance balance = new Balance();
-        for (HuoBiBalance.HuoBiBalanceDetail detail : huoBiBalance.getHuoBiBalanceDetails()) {
+        for (HuoBiBalance.HuoBiBalanceDetail detail : response.data.list) {
             Balance.Detail balanceDetail = new Balance.Detail();
             balanceDetail.available = detail.isAvailable();
             balanceDetail.amount = detail.getAmount();
@@ -115,7 +120,7 @@ public class HuoBiMarketApi extends AbstractMarketApi {
                 signature
         );
 
-        HuoBiWrapper<List<Account>> wrapper = mHuoBiApi.fetchAccounts(signature).execute().body();
+        HuoBiResponse<List<Account>> wrapper = mHuoBiApi.fetchAccounts(signature).execute().body();
         if (!wrapper.isSuccess()) {
             throw new IOException(("fetch account failed"));
         }
