@@ -9,6 +9,6 @@ public class GateModel {
     public String result;
 
     public boolean isSuccess() {
-        return !StringUtils.isBlank(result) && StringUtils.equals(result, "ok");
+        return !StringUtils.isBlank(result) && StringUtils.equals(result, "true");
     }
 }

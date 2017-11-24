@@ -84,8 +84,10 @@ public class App {
                         .getValue().amount + " " + entry.getValue().type);
             }
 
-            PlaceOrderResponse placeOrderResponse = huoBiMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
-            System.out.println("huo bi buy: " + placeOrderResponse.id);
+            PlaceOrderResponse placeOrderResponse = gateMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
+            System.out.println("gate buy: " + placeOrderResponse.id);
+//            PlaceOrderResponse placeOrderResponse = huoBiMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
+//            System.out.println("huo bi buy: " + placeOrderResponse.id);
         } catch (Exception e) {
             e.printStackTrace();
         }
