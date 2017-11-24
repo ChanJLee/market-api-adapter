@@ -81,6 +81,15 @@ public class HuoBiMarketApi extends AbstractMarketApi {
 
     @Override
     public void cancelOrder(Type type, String orderId) throws IOException {
+        Map<String, String> signature = new HashMap<>();
+        MiscUtils.signature(
+                mAccessKey,
+                mSecretKey,
+                "POST",
+                "api.huobi.pro",
+                String.format("/v1/order/orders/%s/submitcancel", orderId),
+                signature
+        );
         mHuoBiApi.cancelOrder(orderId).execute();
     }
 
@@ -90,7 +99,16 @@ public class HuoBiMarketApi extends AbstractMarketApi {
         params.address = address;
         params.amount = String.valueOf(quantity);
         params.currency = type2Symbol(type);
-        mHuoBiApi.withdraw(params).execute();
+        Map<String, String> signature = new HashMap<>();
+        MiscUtils.signature(
+                mAccessKey,
+                mSecretKey,
+                "POST",
+                "api.huobi.pro",
+                "/v1/dw/withdraw-virtual/create",
+                signature
+        );
+        mHuoBiApi.withdraw(params, signature).execute();
     }
 
     @Override

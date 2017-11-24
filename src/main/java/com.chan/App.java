@@ -71,18 +71,18 @@ public class App {
                         .getValue().amount + " " + entry.getValue().type);
             }
 
-//            balance = gateMarketApi.fetchBalance();
-//            System.out.println("gate balance");
-//            System.out.println("frozen");
-//            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
-//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
-//                        .getValue().amount + " " + entry.getValue().type);
-//            }
-//            System.out.println("available");
-//            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
-//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
-//                        .getValue().amount + " " + entry.getValue().type);
-//            }
+            balance = gateMarketApi.fetchBalance();
+            System.out.println("gate balance");
+            System.out.println("frozen");
+            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
+                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+                        .getValue().amount + " " + entry.getValue().type);
+            }
+            System.out.println("available");
+            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
+                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+                        .getValue().amount + " " + entry.getValue().type);
+            }
 
             PlaceOrderResponse placeOrderResponse = huoBiMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
             System.out.println("huo bi buy: " + placeOrderResponse.id);

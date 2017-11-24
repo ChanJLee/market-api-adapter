@@ -30,7 +30,8 @@ public interface HuoBiApi {
 
     @POST("v1/dw/withdraw-virtual/create")
     @Headers("User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36")
-    Call<JsonElement> withdraw(@Body WithdrawParams params);
+    Call<JsonElement> withdraw(@Body WithdrawParams params, @QueryMap Map<String, String>
+            signature);
 
     @GET("v1/account/accounts")
     @Headers("User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36")
