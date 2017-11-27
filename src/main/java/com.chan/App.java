@@ -91,7 +91,10 @@ public class App {
 //            System.out.println("huo bi buy: " + placeOrderResponse.id);
             PlaceOrderResponse placeOrderResponse = binanceMarketApi.placeOrder(Type.USDT_ETH, Action.BUY, 1, 1);
             System.out.println("binance buy: " + placeOrderResponse.id);
-            binanceMarketApi.cancelOrder(Type.USDT_ETH, "2958377");
+            binanceMarketApi.cancelOrder(Type.USDT_ETH, placeOrderResponse.id);
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
