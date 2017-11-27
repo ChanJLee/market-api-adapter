@@ -45,18 +45,19 @@ public class App {
             ticker = binanceMarketApi.fetchTicker(Type.ETH_USDT);
             System.out.println("binance ticker: buy " + ticker.buy + " sell " + ticker.sell);
 
-            Balance balance = huoBiMarketApi.fetchBalance();
-            System.out.println("huo bi balance");
-            System.out.println("frozen");
-            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
-                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
-                        .getValue().amount + " " + entry.getValue().type);
-            }
-            System.out.println("available");
-            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
-                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
-                        .getValue().amount + " " + entry.getValue().type);
-            }
+            Balance balance = null;
+//            balance = huoBiMarketApi.fetchBalance();
+//            System.out.println("huo bi balance");
+//            System.out.println("frozen");
+//            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
+//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+//                        .getValue().amount + " " + entry.getValue().type);
+//            }
+//            System.out.println("available");
+//            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
+//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+//                        .getValue().amount + " " + entry.getValue().type);
+//            }
 
             balance = binanceMarketApi.fetchBalance();
             System.out.println("binance balance");
@@ -71,23 +72,26 @@ public class App {
                         .getValue().amount + " " + entry.getValue().type);
             }
 
-            balance = gateMarketApi.fetchBalance();
-            System.out.println("gate balance");
-            System.out.println("frozen");
-            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
-                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
-                        .getValue().amount + " " + entry.getValue().type);
-            }
-            System.out.println("available");
-            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
-                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
-                        .getValue().amount + " " + entry.getValue().type);
-            }
+//            balance = gateMarketApi.fetchBalance();
+//            System.out.println("gate balance");
+//            System.out.println("frozen");
+//            for (Map.Entry<Type, Balance.Detail> entry : balance.frozen.entrySet()) {
+//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+//                        .getValue().amount + " " + entry.getValue().type);
+//            }
+//            System.out.println("available");
+//            for (Map.Entry<Type, Balance.Detail> entry : balance.available.entrySet()) {
+//                System.out.println("type: " + entry.getKey() + " " + entry.getValue().available + " " + entry
+//                        .getValue().amount + " " + entry.getValue().type);
+//            }
 
-            PlaceOrderResponse placeOrderResponse = gateMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
-            System.out.println("gate buy: " + placeOrderResponse.id);
+//            PlaceOrderResponse placeOrderResponse = gateMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
+//            System.out.println("gate buy: " + placeOrderResponse.id);
 //            PlaceOrderResponse placeOrderResponse = huoBiMarketApi.placeOrder(Type.ETH, Action.BUY, 1, 1);
 //            System.out.println("huo bi buy: " + placeOrderResponse.id);
+            PlaceOrderResponse placeOrderResponse = binanceMarketApi.placeOrder(Type.USDT_ETH, Action.BUY, 1, 1);
+            System.out.println("binance buy: " + placeOrderResponse.id);
+            binanceMarketApi.cancelOrder(Type.USDT_ETH, "2958377");
         } catch (Exception e) {
             e.printStackTrace();
         }

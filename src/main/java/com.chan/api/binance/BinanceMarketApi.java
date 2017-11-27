@@ -59,7 +59,7 @@ public class BinanceMarketApi extends AbstractMarketApi {
     @Override
     public PlaceOrderResponse placeOrder(Type type, Action action, float price, float quantity) throws IOException {
 
-        String symbol = type2Symbol(type);
+        String symbol = type2Symbol(type).toUpperCase();
         PlaceOrderResponse response = new PlaceOrderResponse();
         Response<BinancePlaceOrderResponse> binancePlaceOrderResponseResponse = mBinanceApi.placeOrder(
                 symbol,
@@ -76,7 +76,7 @@ public class BinanceMarketApi extends AbstractMarketApi {
     @Override
     public void cancelOrder(Type type, String orderId) throws IOException {
         mBinanceApi.cancelOrder(
-                type2Symbol(type),
+                type2Symbol(type).toUpperCase(),
                 System.currentTimeMillis())
                 .execute();
     }
