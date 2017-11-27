@@ -93,7 +93,7 @@ public class App {
             System.out.println("binance buy: " + placeOrderResponse.id);
             binanceMarketApi.cancelOrder(Type.USDT_ETH, placeOrderResponse.id);
 
-
+            binanceMarketApi.withdraw(preference.getString("HUO_BI_ETH_ADDRESS"), Type.ETH, 1);
 
         } catch (Exception e) {
             e.printStackTrace();
