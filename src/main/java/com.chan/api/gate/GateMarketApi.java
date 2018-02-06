@@ -160,6 +160,10 @@ public class GateMarketApi extends AbstractMarketApi {
             return "cny";
         }
 
+        if (type == Type.EOS_USDT) {
+            return "eos_usdt";
+        }
+
         return null;
     }
 }

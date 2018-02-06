@@ -192,6 +192,10 @@ public class HuoBiMarketApi extends AbstractMarketApi {
             return "cny";
         }
 
+        if (type == Type.EOS_USDT) {
+            return "eosusdt";
+        }
+
         return null;
     }
 }

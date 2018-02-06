@@ -55,4 +55,6 @@ public interface MarketApi {
      * @throws Exception
      */
     Balance fetchBalance() throws Exception;
+
+    String market();
 }

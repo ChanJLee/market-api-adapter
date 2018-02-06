@@ -42,6 +42,7 @@ public class BinanceMarketApi extends AbstractMarketApi {
 
         try {
             for (BinanceTicker binanceTicker : tickers) {
+                System.out.println(binanceTicker.symbol);
                 if (!StringUtils.isBlank(binanceTicker.symbol) &&
                         StringUtils.equals(binanceTicker.symbol.toLowerCase(), symbol)) {
                     ticker.sell = Float.parseFloat(binanceTicker.askPrice);
@@ -137,6 +138,10 @@ public class BinanceMarketApi extends AbstractMarketApi {
 
         if (type == Type.CNY) {
             return "CNY";
+        }
+
+        if (type == Type.EOS_USDT) {
+            return "eosusdt";
         }
 
         return null;

@@ -22,14 +22,16 @@ public class TestMain {
                 "15342e59-a8bfd7b7-aa124530-407ff");
 
         try {
-            Ticker ticker = huoBiMarketApi.fetchTicker(Type.ETH_USDT);
+            Ticker ticker = huoBiMarketApi.fetchTicker(Type.EOS_USDT);
             System.out.println("huo bi ticker: buy " + ticker.buy + " sell " + ticker.sell);
 
-            ticker = gateMarketApi.fetchTicker(Type.ETH_USDT);
+            ticker = gateMarketApi.fetchTicker(Type.EOS_USDT);
             System.out.println("gate ticker: buy " + ticker.buy + " sell " + ticker.sell);
 
-            ticker = binanceMarketApi.fetchTicker(Type.ETH_USDT);
+            ticker = binanceMarketApi.fetchTicker(Type.EOS_USDT);
             System.out.println("binance ticker: buy " + ticker.buy + " sell " + ticker.sell);
+
+            Runtime.getRuntime().exec("say hello");
         } catch (IOException e) {
             e.printStackTrace();
         }

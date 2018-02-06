@@ -9,5 +9,6 @@ public enum Type {
     ETH,
     USDT,
     CNY,
+    EOS_USDT,
     UNKNOWN;
 }
