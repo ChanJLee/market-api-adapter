@@ -13,11 +13,11 @@ public class CreateOrderParams {
     /**
      * 市价买入
      */
-    static final String BUY_MARKET = "buy-market";
+    static final String BUY_MARKET = "buy-fetchMarketName";
     /**
      * 市价卖出
      */
-    static final String SELL_MARKET = "sell-market";
+    static final String SELL_MARKET = "sell-fetchMarketName";
   }
 
   /**
@@ -41,7 +41,7 @@ public class CreateOrderParams {
   public String price = "0.0";
 
   /**
-   * 订单类型，取值范围"buy-market,sell-market,buy-limit,sell-limit"
+   * 订单类型，取值范围"buy-fetchMarketName,sell-fetchMarketName,buy-limit,sell-limit"
    */
   public String type;
 

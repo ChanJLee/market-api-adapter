@@ -20,8 +20,7 @@ public class BizBus extends Thread {
     private List<MarketApi> mMarketApis = new ArrayList<>();
 
 
-    public BizBus(long duration) {
-        mDuration = duration;
+    public BizBus() {
         MarketApi huoBiMarketApi = new HuoBiMarketApi("8299346f-17ee81c3-8b7fa980-1f1d3",
                 "15342e59-a8bfd7b7-aa124530-407ff");
         mMarketApis.add(huoBiMarketApi);
@@ -44,11 +43,11 @@ public class BizBus extends Thread {
                 try {
                     Ticker ticker = marketApi.fetchTicker(Type.EOS_USDT);
                     if (ticker.buy >= mBuyWarningThreshold) {
-                        waring(String.format("say %s buy price is more than %s", marketApi.market(), mBuyWarningThreshold));
+                        waring(String.format("say %s buy price is more than %s", marketApi.fetchMarketName(), mBuyWarningThreshold));
                     }
 
                     if (ticker.sell <= mSellWarningThreshold) {
-                        waring(String.format("say %s sell price is less than %s", marketApi.market(),
+                        waring(String.format("say %s sell price is less than %s", marketApi.fetchMarketName(),
                                 mSellWarningThreshold));
                     }
                 } catch (IOException e) {

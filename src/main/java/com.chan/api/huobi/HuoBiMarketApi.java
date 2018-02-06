@@ -148,6 +148,11 @@ public class HuoBiMarketApi extends AbstractMarketApi {
         return balance;
     }
 
+    @Override
+    public String fetchMarketName() {
+        return "火币";
+    }
+
     private long fetchAccountId() throws IOException {
         Map<String, String> signature = new HashMap<>();
         MiscUtils.signature(

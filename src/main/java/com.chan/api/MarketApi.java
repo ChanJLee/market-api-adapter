@@ -56,5 +56,5 @@ public interface MarketApi {
      */
     Balance fetchBalance() throws Exception;
 
-    String market();
+    String fetchMarketName();
 }

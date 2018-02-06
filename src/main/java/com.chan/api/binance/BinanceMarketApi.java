@@ -119,6 +119,11 @@ public class BinanceMarketApi extends AbstractMarketApi {
     }
 
     @Override
+    public String fetchMarketName() {
+        return "币安";
+    }
+
+    @Override
     protected String type2Symbol(Type type) {
         if (type == Type.ETH_USDT) {
             return "ethusdt";

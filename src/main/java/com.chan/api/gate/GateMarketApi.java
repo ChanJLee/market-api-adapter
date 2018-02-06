@@ -116,6 +116,11 @@ public class GateMarketApi extends AbstractMarketApi {
         return balance;
     }
 
+    @Override
+    public String fetchMarketName() {
+        return "gate";
+    }
+
     private void addBalance(Map<Type, Balance.Detail> target,
                             Map<String, String> balanceMap,
                             boolean available,
